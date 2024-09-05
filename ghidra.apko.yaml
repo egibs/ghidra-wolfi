@@ -1,0 +1,33 @@
+contents:
+  repositories:
+    - "@local packages"
+    - https://packages.wolfi.dev/os
+  keyring:
+    - melange.rsa.pub
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  packages:
+    - bash
+    - busybox
+    - ghidra@local
+    - libx11
+    - openjdk-21
+    - xauth
+
+entrypoint:
+  command: /bin/bash -c "/usr/bin/ghidra/ghidraRun & tail -f /dev/null"
+
+environment:
+  JAVA_HOME: /usr/lib/jvm/java-21-openjdk
+  _JAVA_OPTIONS: "-Dsun.java2d.xrender=false"
+  DISPLAY: ":0"
+  PATH: /usr/lib/jvm/java-21-openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+accounts:
+  groups:
+    - groupname: ghidra
+      gid: 61924
+  users:
+    - username: ghidra
+      uid: 61924
+
+archs: [x86_64]
