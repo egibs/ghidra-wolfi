@@ -1,15 +1,20 @@
 # ghidra-wolfi
-Ghidra built for Wolfi + Apko
 
-This is an experimental build of Ghidra as a Wolfi package and accompanying Apko image.
+This repo contains the mechanisms to build an experimental variant of Ghidra as an APK via Melange and an OCI image to consume that APK via Apko.
+
+<img src="img/ui.png" alt="Ghidra GUI running in a container" width="1024"/>
+
+<img src="img/import.png" alt="Ghidra import running in a container" width="1024"/>
 
 This process results in a functional version of Ghidra with minimal CVEs.
 
 Requirements:
+
 - [Melange](https://github.com/chainguard-dev/melange) (Package)
 - [Apko](https://github.com/chainguard-dev/apko) (Image)
 
-Build process:
+Build process (`x86_64` for now; `aarch64` may or may not work reliably):
+
 1. `melange keygen`
 2. `melange build --arch x86_64 ghidra.yaml --signing-key melange.rsa`
 3. `apko build ghidra.apko.yaml ghidra:latest ghidra.tar`
@@ -21,15 +26,18 @@ The image is built with `DISPLAY=:0` but may need to be overridden depending on 
 > On macOS, the `Allow connections from network clients` box in the Security menu needs to be checked within the XQuartz Settings as well.
 
 When the image is run, the following console output is expected:
+
 ```
 non-network local connections being added to access control list
 WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
 Picked up _JAVA_OPTIONS: -Dsun.java2d.xrender=false
 Picked up _JAVA_OPTIONS: -Dsun.java2d.xrender=false
 ```
+
 after which the Ghidra UI will be visible. The container uses `tail -f /dev/null` to run indefinitely.
 
 CVE scan:
+
 ```
 grype c47ada55ad4d
  ✔ Vulnerability DB                [no update available]
