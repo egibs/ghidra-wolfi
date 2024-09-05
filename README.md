@@ -5,6 +5,10 @@ This is an experimental build of Ghidra as a Wolfi package and accompanying Apko
 
 This process results in a functional version of Ghidra with minimal CVEs.
 
+Requirements:
+- [Melange](https://github.com/chainguard-dev/melange) (Package)
+- [Apko](https://github.com/chainguard-dev/apko) (Image)
+
 Build process:
 1. `melange keygen`
 2. `melange build --arch x86_64 ghidra.yaml --signing-key melange.rsa`
@@ -13,6 +17,8 @@ Build process:
 5. `xhost +local:@docker; docker run --rm -it --net=host -e DISPLAY=host.docker.internal:0 -v /tmp/.X11-unix/:/tmp/.X11-unix/ ghidra:latest-amd64`
 
 The image is built with `DISPLAY=:0` but may need to be overridden depending on the OS. For macOS, [XQuartz](https://www.xquartz.org/) is required; `xhost + 127.0.0.1` may also be required.
+
+> On macOS, the `Allow connections from network clients` box in the Security menu needs to be checked within the XQuartz Settings as well.
 
 When the image is run, the following console output is expected:
 ```
